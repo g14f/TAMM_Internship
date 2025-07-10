@@ -4,8 +4,6 @@ import tempfile
 import json
 import pandas as pd
 import pandasai as pai
-st.write(dir(pai))
-'''
 from pandasai.data_loader.semantic_layer_schema import SemanticLayerSchema, Source
 from pandasai.core.response.chart import ChartResponse
 from pandasai.core.response.dataframe import DataFrameResponse
@@ -143,4 +141,4 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
                 """,
                 unsafe_allow_html=True
                         )
-                        st.image(chat["message"]._get_image()) '''
+                        st.image(chat["message"]._get_image()) 

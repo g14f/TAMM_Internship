@@ -4,8 +4,7 @@ import tempfile
 import json
 import pandas as pd
 import pandasai as pai
-from pandasai import SemanticLayerSchema
-from pandasai import Source
+from pandasai.data_loader.semantic_layer_schema import SemanticLayerSchema, Source
 from pandasai.core.response.chart import ChartResponse
 from pandasai.core.response.dataframe import DataFrameResponse
 from pandasai.core.response.number import NumberResponse

@@ -1,0 +1,6 @@
+pandas
+pandasai
+streamlit
+os
+tempfile
+json

@@ -1,2 +1,3 @@
 pandas
 streamlit
+pandasai==2.6.8

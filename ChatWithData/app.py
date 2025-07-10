@@ -4,7 +4,7 @@ import tempfile
 import json
 import pandas as pd
 import pandasai as pai
-st.write(dir(pai.schemas.__loader__))
+st.write(dir(pai.schemas))
 '''
 from pandasai.data_loader.semantic_layer_schema import SemanticLayerSchema, Source
 from pandasai.core.response.chart import ChartResponse

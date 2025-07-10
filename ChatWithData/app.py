@@ -11,7 +11,7 @@ from pandasai.core.response.dataframe import DataFrameResponse
 from pandasai.core.response.number import NumberResponse
 from pandasai.core.response.string import StringResponse
 
-api_key = st.secrets("API_KEY")
+api_key = st.secrets["API_KEY"]
 
 pai.api_key.set(api_key)
 

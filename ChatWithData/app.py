@@ -89,7 +89,7 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
             st.session_state.conversation.append({"role": "user", "type": "text", "message": question})
             st.session_state.conversation.append({"role": "bot", "type": "text", "message": "Invalid Question"})
             print(st.session_state.conversation)
-            st.write(e.__traceback__)
+            st.write(e.__traceback__str__())
         with chat_container:
             st.markdown("<div style='height: 80vh; overflow-y: auto;'>", unsafe_allow_html=True)
     

@@ -70,11 +70,11 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
     if st.session_state.df is None:
         llm = GeminiLLM(api_key=google_api_key)
         df = pd.read_csv(st.session_state.path)
+        df.columns = df.columns.map(str)
         df = SmartDataframe(df, config={"llm": llm})
         source = Source(type="csv", path=st.session_state.path)
         columns=[Column(name=str(col["name"]), type=col["type"], description=col["description"]) for col in st.session_state.columns]
         schema = SemanticLayerSchema(name="schema1", description=st.session_state.description_text, columns=columns, source=source,dataframe=df)
-        df.columns = df.columns.map(str)
         st.write(set([type(i) for i in df.columns]))
         st.session_state.df = pai.DataFrame(data=df, schema=schema)
     st.session_state.csv = True

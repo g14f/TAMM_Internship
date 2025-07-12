@@ -38,7 +38,7 @@ if 'description' not in st.session_state:
 if 'json' not in st.session_state:
     st.session_state.json = False
 if 'df' not in st.session_state:
-    st.session_state.df = None
+    st.session_state.schema = None
 if 'path' not in st.session_state:
     st.session_state.path = None
 if 'columns' not in st.session_state:
@@ -47,6 +47,8 @@ if 'description_text' not in st.session_state:
     st.session_state.description_text = None
 if 'conversation' not in st.session_state:
     st.session_state.conversation = []
+if 'pandas_ai' not in st.session_state:
+    st.session_state.pandas_ai = None
 
 if not st.session_state.csv or not st.session_state.description or not st.session_state.json:
     file = st.file_uploader("Upload your data as CSV format")
@@ -69,12 +71,9 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
 if st.session_state.csv and st.session_state.description and st.session_state.json and st.session_state.path and st.session_state.description_text and st.session_state.columns:
     if st.session_state.df is None:
         llm = GeminiLLM(api_key=google_api_key)
-        df = pd.read_csv(st.session_state.path)
-        df.columns.map(str)
-        df= SmartDataframe(df,config={'llm':llm})
         source = Source(type="csv", path=st.session_state.path)
-        schema = SemanticLayerSchema(name="schema1", description=st.session_state.description_text, columns=st.session_state.columns, source=source,dataframe=df)
-        st.session_state.df = pai.DataFrame(data=df, schema=schema)
+        st.session_state.schema = SemanticLayerSchema(name="schema1", description=st.session_state.description_text, columns=st.session_state.columns, source=source,dataframe=df)
+        st.session_state.pandas_ai = PandasAI(llm=llm, verbose=True)
 
     st.session_state.csv = True
     st.session_state.description = True
@@ -87,10 +86,9 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
         try:
             response = None
             if len(st.session_state.conversation) == 0:
-                response = st.session_state.df.chat(question) 
+                response = st.session_state.pandas_ai.chat([st.session_state.schema],question) 
             else:
-                response = st.session_state.df.follow_up(question)
-            print(st.session_state.df._agent._state.memory._messages)
+                response = st.session_state.pandas_ai.follow_up([st.session_state.schema],question)
             
             st.session_state.conversation.append({"role": "user", "type": "text", "message": question})
             if isinstance(response, DataFrameResponse):

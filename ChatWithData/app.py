@@ -23,12 +23,8 @@ class GeminiLLM(LLM):
     def call(self, prompt: str, **kwargs) -> str:
         response = self.client.generate_content(prompt)
         return response.text if hasattr(response, 'text') else str(response)
-
-google_api_key = st.secrets["GOOGLE_API_KEY"]
-
-st.title("Chatbot")
-df = None
-
+        
+st.title("Chat with Data")
 if 'csv' not in st.session_state:
     st.session_state.csv = False
 if 'description' not in st.session_state:
@@ -36,24 +32,19 @@ if 'description' not in st.session_state:
 if 'json' not in st.session_state:
     st.session_state.json = False
 if 'df' not in st.session_state:
+    st.session_state.df = None
+if 'schema' not in st.session_state:
     st.session_state.schema = None
-if 'path' not in st.session_state:
-    st.session_state.path = None
-if 'columns' not in st.session_state:
-    st.session_state.columns = None
 if 'description_text' not in st.session_state:
     st.session_state.description_text = None
 if 'conversation' not in st.session_state:
     st.session_state.conversation = []
 
 if not st.session_state.csv or not st.session_state.description or not st.session_state.json:
-    file = st.file_uploader("Upload your data as CSV format")
+    file = st.file_uploader("Upload your data as CSV format",type=["csv"])
     if file:
         st.session_state.csv = True
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as tmp:
-            tmp.write(file.read())
-            st.session_state.path = tmp.name
-
+        st.session_state.df = pd.read_csv(file)
     description = st.text_input("Enter a description of your data:")
     if description:
         st.session_state.description_text = description
@@ -62,22 +53,16 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
     metadata = st.file_uploader("Upload your columns metadata as JSON format", key="f2")
     if metadata:
         st.session_state.json = True
-        st.session_state.columns = json.load(metadata)
+        columns = json.load(metadata)
+        st.session_state.schema = SemanticLayerSchema(name="schema",description=st.state.description,columns=columns)
 
-if st.session_state.csv and st.session_state.description and st.session_state.json and st.session_state.path and st.session_state.description_text and st.session_state.columns:
-    if st.session_state.df is None:
-        llm = GeminiLLM(api_key=google_api_key)
-        pai = PandasAI(llm)
-        df.columns = df.columns.map(str)
-        df = SmartDataframe(df, config={"llm": llm})
-        source = Source(type="csv", path=st.session_state.path)
-        schema = SemanticLayerSchema(name="schema1", description=st.session_state.description_text, columns=st.session_state.columns, source=source,dataframe=df)
-        print(df.columns)
-        st.session_state.df = pai.DataFrame(data=df, schema=schema)
+if st.session_state.csv and st.session_state.description and st.session_state.json and st.session_state.df and st.session_state.description_text and st.session_state.columns:
+    llm = GeminiLLM(api_key=st.secrets["GOOGLE_API_KEY"])
+    pai = PandasAI(llm)
+    st.session_state.df = pai.DataFrame(data=df, schema=schema)
     st.session_state.csv = True
     st.session_state.description = True
     st.session_state.json = True
-
     chat_container = st.container()
     question = st.text_input("Ask a question about the data:", key="q", label_visibility="collapsed", placeholder="Type your question here...")
     

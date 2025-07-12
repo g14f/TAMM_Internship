@@ -11,7 +11,6 @@ from pandasai.core.response.number import NumberResponse
 from pandasai.core.response.string import StringResponse
 from pandasai.smart_dataframe import SmartDataframe
 from pandasai.llm.base import LLM
-from pandasai.pandas_ai import PandasAI
 import google.generativeai as genai
 
 class GeminiLLM(LLM):
@@ -48,8 +47,6 @@ if 'description_text' not in st.session_state:
     st.session_state.description_text = None
 if 'conversation' not in st.session_state:
     st.session_state.conversation = []
-if 'pandas_ai' not in st.session_state:
-    st.session_state.pandas_ai = None
 
 if not st.session_state.csv or not st.session_state.description or not st.session_state.json:
     file = st.file_uploader("Upload your data as CSV format")
@@ -74,10 +71,10 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
         llm = GeminiLLM(api_key=google_api_key)
         for col in st.session_state.columns:
             col["name"] = str(col["name"])
+        df = SmartDataframe(your_pandas_df, config={"llm": llm})
         source = Source(type="csv", path=st.session_state.path)
         st.session_state.schema = SemanticLayerSchema(name="schema1", description=st.session_state.description_text, columns=st.session_state.columns, source=source,dataframe=df)
-        st.session_state.pandas_ai = PandasAI(llm=llm, verbose=True)
-
+        st.session_state.df = pai.DataFrame(data=df, schema=schema)
     st.session_state.csv = True
     st.session_state.description = True
     st.session_state.json = True

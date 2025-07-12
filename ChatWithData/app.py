@@ -70,6 +70,7 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
     if st.session_state.df is None:
         llm = GeminiLLM(api_key=google_api_key)
         df = pd.read_csv(st.session_state.path)
+        df.columns.map(str)
         df= SmartDataframe(df,config={'llm':llm})
         source = Source(type="csv", path=st.session_state.path)
         schema = SemanticLayerSchema(name="schema1", description=st.session_state.description_text, columns=st.session_state.columns, source=source,dataframe=df)

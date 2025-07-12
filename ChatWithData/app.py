@@ -4,7 +4,7 @@ import tempfile
 import json
 import pandas as pd
 import pandasai as pai
-from pandasai.data_loader.semantic_layer_schema import SemanticLayerSchema, Source
+from pandasai.data_loader.semantic_layer_schema import SemanticLayerSchema, Source, Column
 from pandasai.core.response.chart import ChartResponse
 from pandasai.core.response.dataframe import DataFrameResponse
 from pandasai.core.response.number import NumberResponse
@@ -72,7 +72,8 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
         df = pd.read_csv(st.session_state.path)
         df = SmartDataframe(df, config={"llm": llm})
         source = Source(type="csv", path=st.session_state.path)
-        schema = SemanticLayerSchema(name="schema1", description=st.session_state.description_text, columns=st.session_state.columns, source=source,dataframe=df)
+        columns=[Column(name=str(col["name"]), type=col["type"], description=col["description"]) for col in st.session_state.columns]
+        schema = SemanticLayerSchema(name="schema1", description=st.session_state.description_text, columns=columns, source=source,dataframe=df)
         df.columns.map(str)
         st.write(set([type(i) for i in df.columns]))
         st.session_state.df = pai.DataFrame(data=df, schema=schema)

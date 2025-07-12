@@ -3,5 +3,4 @@ pandas
 pandasai>=3.0.0b2
 pyyaml
 matplotlib
-langchain
-langchain-google-genai
+google-generativeai>=0.3.2

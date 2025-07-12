@@ -69,7 +69,7 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
 if st.session_state.csv and st.session_state.description and st.session_state.json and st.session_state.path and st.session_state.description_text and st.session_state.columns:
     if st.session_state.df is None:
         llm = GeminiLLM(api_key=google_api_key)
-        df = pai.read_csv(st.session_state.path, _table_name="my_dataset")
+        df = pd.read_csv(st.session_state.path)
         df= SmartDataframe(df,config={'llm':llm})
         source = Source(type="csv", path=st.session_state.path)
         schema = SemanticLayerSchema(name="schema1", description=st.session_state.description_text, columns=st.session_state.columns, source=source)

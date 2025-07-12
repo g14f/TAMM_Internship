@@ -87,9 +87,9 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
         try:
             response = None
             if len(st.session_state.conversation) == 0:
-                response = st.session_state.pandas_ai.chat([st.session_state.schema],question) 
+                response = st.session_state.df.chat(question) 
             else:
-                response = st.session_state.pandas_ai.follow_up([st.session_state.schema],question)
+                response = st.session_state.df.follow_up(question)
             
             st.session_state.conversation.append({"role": "user", "type": "text", "message": question})
             if isinstance(response, DataFrameResponse):

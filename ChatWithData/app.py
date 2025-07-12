@@ -9,6 +9,7 @@ from pandasai.core.response.chart import ChartResponse
 from pandasai.core.response.dataframe import DataFrameResponse
 from pandasai.core.response.number import NumberResponse
 from pandasai.core.response.string import StringResponse
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 api_key = st.secrets["API_KEY"]
 
@@ -54,7 +55,9 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
 
 if st.session_state.csv and st.session_state.description and st.session_state.json and st.session_state.path and st.session_state.description_text and st.session_state.columns:
     if st.session_state.df is None:
+        llm = ChatGoogleGenerativeAI(model='gemini-2.5-pro',api_key='AIzaSyC6OT9ZllPMmhAb4qN_kS8daTSnARNNac4')
         df = pai.read_csv(st.session_state.path)
+        df= SmartDataframe(df,config={'llm':llm})
         source = Source(type="csv", path=st.session_state.path)
         schema = SemanticLayerSchema(name="schema1", description=st.session_state.description_text, columns=st.session_state.columns, source=source)
         st.session_state.df = pai.DataFrame(data=df, schema=schema)

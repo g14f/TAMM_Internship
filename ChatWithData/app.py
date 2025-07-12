@@ -3,7 +3,7 @@ import streamlit as st
 import tempfile
 import json
 import pandas as pd
-import pandasai as pai
+from pandasai import PandasAI
 from pandasai.data_loader.semantic_layer_schema import SemanticLayerSchema, Source, Column
 from pandasai.core.response.chart import ChartResponse
 from pandasai.core.response.dataframe import DataFrameResponse
@@ -24,9 +24,7 @@ class GeminiLLM(LLM):
         response = self.client.generate_content(prompt)
         return response.text if hasattr(response, 'text') else str(response)
 
-pai_api_key = st.secrets["PAI_API_KEY"]
 google_api_key = st.secrets["GOOGLE_API_KEY"]
-pai.api_key.set(pai_api_key)
 
 st.title("Chatbot")
 df = None
@@ -69,7 +67,7 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
 if st.session_state.csv and st.session_state.description and st.session_state.json and st.session_state.path and st.session_state.description_text and st.session_state.columns:
     if st.session_state.df is None:
         llm = GeminiLLM(api_key=google_api_key)
-        df = pd.read_csv(st.session_state.path)
+        pai = PandasAI(llm)
         df.columns = df.columns.map(str)
         df = SmartDataframe(df, config={"llm": llm})
         source = Source(type="csv", path=st.session_state.path)

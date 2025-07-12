@@ -9,6 +9,7 @@ from pandasai.core.response.chart import ChartResponse
 from pandasai.core.response.dataframe import DataFrameResponse
 from pandasai.core.response.number import NumberResponse
 from pandasai.core.response.string import StringResponse
+from pandasai.smart_dataframe import SmartDataframe
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 pai_api_key = st.secrets["PAI_API_KEY"]

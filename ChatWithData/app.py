@@ -11,6 +11,7 @@ from pandasai.core.response.number import NumberResponse
 from pandasai.core.response.string import StringResponse
 from pandasai.smart_dataframe import SmartDataframe
 from pandasai.llm.base import LLM
+from pandasai.pandas_ai import PandasAI
 import google.generativeai as genai
 
 class GeminiLLM(LLM):

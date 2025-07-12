@@ -10,7 +10,19 @@ from pandasai.core.response.dataframe import DataFrameResponse
 from pandasai.core.response.number import NumberResponse
 from pandasai.core.response.string import StringResponse
 from pandasai.smart_dataframe import SmartDataframe
-from langchain_google_genai import ChatGoogleGenerativeAI
+from pandasai.llm.base import LLM
+import google.generativeai as genai
+
+class GeminiLLM(LLM):
+    def __init__(self, api_key: str, model="gemini-2.5-pro"):
+        self.api_key = api_key
+        self.model = model
+        genai.configure(api_key=api_key)
+        self.client = genai.GenerativeModel(model)
+
+    def call(self, prompt: str, **kwargs) -> str:
+        response = self.client.generate_content(prompt)
+        return response.text if hasattr(response, 'text') else str(response)
 
 pai_api_key = st.secrets["PAI_API_KEY"]
 google_api_key = st.secrets["GOOGLE_API_KEY"]
@@ -56,7 +68,7 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
 
 if st.session_state.csv and st.session_state.description and st.session_state.json and st.session_state.path and st.session_state.description_text and st.session_state.columns:
     if st.session_state.df is None:
-        llm = ChatGoogleGenerativeAI(model='gemini-2.5-pro',api_key=google_api_key)
+        llm = GeminiLLM(api_key=google_api_key)
         df = pai.read_csv(st.session_state.path)
         df= SmartDataframe(df,config={'llm':llm})
         source = Source(type="csv", path=st.session_state.path)

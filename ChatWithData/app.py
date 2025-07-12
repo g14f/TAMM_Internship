@@ -71,6 +71,8 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
 if st.session_state.csv and st.session_state.description and st.session_state.json and st.session_state.path and st.session_state.description_text and st.session_state.columns:
     if st.session_state.df is None:
         llm = GeminiLLM(api_key=google_api_key)
+        for col in st.session_state.columns:
+            col["name"] = str(col["name"])
         source = Source(type="csv", path=st.session_state.path)
         st.session_state.schema = SemanticLayerSchema(name="schema1", description=st.session_state.description_text, columns=st.session_state.columns, source=source,dataframe=df)
         st.session_state.pandas_ai = PandasAI(llm=llm, verbose=True)

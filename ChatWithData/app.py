@@ -71,7 +71,8 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
         llm = GeminiLLM(api_key=google_api_key)
         for col in st.session_state.columns:
             col["name"] = str(col["name"])
-        df = SmartDataframe(your_pandas_df, config={"llm": llm})
+        df = pd.read_csv(st.session_state.path)
+        df = SmartDataframe(df, config={"llm": llm})
         source = Source(type="csv", path=st.session_state.path)
         st.session_state.schema = SemanticLayerSchema(name="schema1", description=st.session_state.description_text, columns=st.session_state.columns, source=source,dataframe=df)
         st.session_state.df = pai.DataFrame(data=df, schema=schema)

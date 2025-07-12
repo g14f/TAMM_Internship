@@ -74,7 +74,7 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
         source = Source(type="csv", path=st.session_state.path)
         schema = SemanticLayerSchema(name="schema1", description=st.session_state.description_text, columns=st.session_state.columns, source=source,dataframe=df)
         df.columns.map(str)
-        st.write(df.columns)
+        st.write(set(type(df.columns)))
         st.session_state.df = pai.DataFrame(data=df, schema=schema)
     st.session_state.csv = True
     st.session_state.description = True

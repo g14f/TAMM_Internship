@@ -57,7 +57,7 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
         columns = json.load(metadata)
         st.session_state.schema = SemanticLayerSchema(name="schema",description=st.session_state.description,columns=columns)
 
-if st.session_state.csv and st.session_state.description and st.session_state.json and st.session_state.df and st.session_state.description_text and st.session_state.columns:
+if st.session_state.csv and st.session_state.description and st.session_state.json
     llm = GeminiLLM(api_key=st.secrets["GOOGLE_API_KEY"])
     st.session_state.df = pai.DataFrame(data=df, schema=schema,config={"llm":llm})
     st.session_state.csv = True

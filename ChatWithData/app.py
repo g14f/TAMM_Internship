@@ -32,14 +32,24 @@ class PandasAILLM(LLM):
         return "pandasai"
 
     def call(self, instruction: Any, context: Optional[dict] = None) -> str:
+    # Convert structured prompt to plain string
+        if not isinstance(instruction, str):
+            try:
+                instruction = instruction.to_string()  # Preferred
+            except AttributeError:
+                try:
+                    instruction = str(instruction)
+                except Exception:
+                    raise TypeError(f"Cannot stringify instruction of type {type(instruction)}")
+
         payload = {
             "model": self.model,
             "messages": [{"role": "user", "content": instruction}],
             "temperature": self.temperature
         }
         headers = {
-            "Authorization": f"Bearer {self.api_key}",
-            "Content-Type": "application/json"
+        "Authorization": f"Bearer {self.api_key}",
+        "Content-Type": "application/json"
         }
 
         response = requests.post(self.api_url, headers=headers, json=payload)
@@ -49,6 +59,7 @@ class PandasAILLM(LLM):
             return result["choices"][0]["message"]["content"]
         else:
             raise RuntimeError(f"PandasAI API Error {response.status_code}: {response.text}")
+
 
 class GeminiLLM(LLM):
     def __init__(self, api_key: str, model="gemini-2.5-pro"):

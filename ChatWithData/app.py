@@ -10,7 +10,7 @@ from pandasai.core.response.chart import ChartResponse
 from pandasai.core.response.dataframe import DataFrameResponse
 from pandasai.core.response.number import NumberResponse
 from pandasai.core.response.string import StringResponse
-from pandasai.dataframe.virtual_dataframe import VirtualDataFrame
+from pandasai.dataframe.base import DataFrame
 from pandasai.llm.base import LLM
 from pandasai.agent.base import Agent
 import google.generativeai as genai
@@ -67,8 +67,8 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
 
 if st.session_state.csv and st.session_state.description and st.session_state.json:
     llm = GeminiLLM(api_key=st.secrets["GOOGLE_API_KEY"])
-    vdf = VirtualDataFrame(data=st.session_state.df, schema=st.session_state.schema)
-    st.session_state.agent = Agent(dfs=vdf, config={"llm": llm})
+    df = DataFrame(data=st.session_state.df, schema=st.session_state.schema)
+    st.session_state.agent = Agent(dfs=df, config={"llm": llm})
     st.session_state.csv = True
     st.session_state.description = True
     st.session_state.json = True

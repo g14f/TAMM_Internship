@@ -6,7 +6,7 @@ import requests
 import pandas as pd
 import pandasai as pai
 import google.generativeai as genai
-from typing import Optional
+from typing import Optional, Any
 from pandasai.dataframe.base import DataFrame
 from pandasai.data_loader.semantic_layer_schema import SemanticLayerSchema, Source, Column
 from pandasai.core.response.chart import ChartResponse

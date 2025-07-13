@@ -22,6 +22,9 @@ class GeminiLLM(LLM):
         genai.configure(api_key=api_key)
         self.client = genai.GenerativeModel(model)
 
+    def type(self) -> str:
+        return "gemini"
+
     def call(self, prompt: str, **kwargs) -> str:
         response = self.client.generate_content(prompt)
         return response.text if hasattr(response, 'text') else str(response)

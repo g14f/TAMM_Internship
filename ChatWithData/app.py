@@ -119,7 +119,7 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
         st.session_state.schema = SemanticLayerSchema(name="schema",description=st.session_state.description_text,columns=columns,source=Source(type="csv",path=st.session_state.path))
 
 if st.session_state.csv and st.session_state.description and st.session_state.json:
-    llm = PandasAILLM(api_token=st.secrets["PAI_API_KEY"])
+    llm = GeminiLLM(api_token=st.secrets["PAI_API_KEY"])
     df = DataFrame(data=st.session_state.df, schema=st.session_state.schema)
     st.session_state.agent = Agent(dfs=df, config={"llm": llm})
     st.session_state.csv = True

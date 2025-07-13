@@ -32,8 +32,8 @@ class PandasAILLM(LLM):
         return "pandasai"
 
     def call(self, instruction: Any, context: Optional[dict] = None) -> str:
-        st.write("Instruction type:", type(instruction))
-        st.write("Instruction dir:", dir(instruction))
+        print("Instruction type:", type(instruction))
+        print("Instruction dir:", dir(instruction))
 
         if not isinstance(instruction, str):
             try:

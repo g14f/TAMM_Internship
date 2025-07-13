@@ -57,6 +57,7 @@ class GeminiLLM(LLM):
         genai.configure(api_key=api_key)
         self.client = genai.GenerativeModel(model)
 
+    @property
     def type(self) -> str:
         return "gemini"
 
@@ -106,6 +107,8 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
 
 if st.session_state.csv and st.session_state.description and st.session_state.json:
     llm = PandasAILLM(api_token=st.secrets["PAI_API_KEY"])
+    print("LLM instance type:", type(llm))
+    print("LLM type property:", llm.type)
     df = DataFrame(data=st.session_state.df, schema=st.session_state.schema)
     st.session_state.agent = Agent(dfs=df, config={"llm": llm})
     st.session_state.csv = True

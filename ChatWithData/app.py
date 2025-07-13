@@ -25,9 +25,10 @@ class GeminiLLM(LLM):
     def type(self) -> str:
         return "gemini"
 
-    def call(self, prompt: str, **kwargs) -> str:
-        response = self.client.generate_content(prompt)
+    def call(self, instruction: str, context: dict) -> str:
+        response = self.client.generate_content(instruction)
         return response.text if hasattr(response, 'text') else str(response)
+
         
 st.title("Chat with Data")
 if 'csv' not in st.session_state:

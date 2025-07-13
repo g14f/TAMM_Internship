@@ -2,8 +2,11 @@ import os
 import streamlit as st
 import tempfile
 import json
+import requests
 import pandas as pd
 import pandasai as pai
+import google.generativeai as genai
+from typing import Optional
 from pandasai.dataframe.base import DataFrame
 from pandasai.data_loader.semantic_layer_schema import SemanticLayerSchema, Source, Column
 from pandasai.core.response.chart import ChartResponse
@@ -13,7 +16,39 @@ from pandasai.core.response.string import StringResponse
 from pandasai.dataframe.base import DataFrame
 from pandasai.llm.base import LLM
 from pandasai.agent.base import Agent
-import google.generativeai as genai
+import requests
+from pandasai.llm.base import LLM
+from typing import Optional
+
+class PandasAILLM(LLM):
+    def __init__(self, api_token: str, model: str = "gpt-3.5", temperature: float = 0.2):
+        super().__init__(api_key=api_token)
+        self.model = model
+        self.temperature = temperature
+        self.api_url = "https://api.pandas-ai.com/v1/chat/completions"
+
+    @property
+    def type(self) -> str:
+        return "pandasai"
+
+    def call(self, instruction: str, context: Optional[dict] = None) -> str:
+        payload = {
+            "model": self.model,
+            "messages": [{"role": "user", "content": instruction}],
+            "temperature": self.temperature
+        }
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+
+        response = requests.post(self.api_url, headers=headers, json=payload)
+
+        if response.status_code == 200:
+            result = response.json()
+            return result["choices"][0]["message"]["content"]
+        else:
+            raise RuntimeError(f"PandasAI API Error {response.status_code}: {response.text}")
 
 class GeminiLLM(LLM):
     def __init__(self, api_key: str, model="gemini-2.5-pro"):
@@ -70,7 +105,7 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
         st.session_state.schema = SemanticLayerSchema(name="schema",description=st.session_state.description_text,columns=columns,source=Source(type="csv",path=st.session_state.path))
 
 if st.session_state.csv and st.session_state.description and st.session_state.json:
-    llm = LLM(api_key=st.secrets["PAI_API_KEY"])
+    llm = PandasAILLM(api_token=st.secrets["PAI_API_KEY"])
     df = DataFrame(data=st.session_state.df, schema=st.session_state.schema)
     st.session_state.agent = Agent(dfs=df, config={"llm": llm})
     st.session_state.csv = True

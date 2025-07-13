@@ -32,6 +32,8 @@ if 'description' not in st.session_state:
     st.session_state.description = False
 if 'json' not in st.session_state:
     st.session_state.json = False
+if 'path' not in st.session_state:
+    st.session_state.path = None
 if 'df' not in st.session_state:
     st.session_state.df = None
 if 'schema' not in st.session_state:
@@ -46,6 +48,9 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
     if file:
         st.session_state.csv = True
         st.session_state.df = pd.read_csv(file)
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as tmp:
+            tmp.write(file.getbuffer())
+            st.session_state.path = tmp.name
     description = st.text_input("Enter a description of your data:")
     if description:
         st.session_state.description_text = description
@@ -55,7 +60,7 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
     if metadata:
         st.session_state.json = True
         columns = json.load(metadata)
-        st.session_state.schema = SemanticLayerSchema(name="schema",description=st.session_state.description_text,columns=columns,source=Source(type="csv"))
+        st.session_state.schema = SemanticLayerSchema(name="schema",description=st.session_state.description_text,columns=columns,source=Source(type="csv",path=st.session_state.path))
 
 if st.session_state.csv and st.session_state.description and st.session_state.json:
     llm = GeminiLLM(api_key=st.secrets["GOOGLE_API_KEY"])

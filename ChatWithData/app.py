@@ -3,7 +3,8 @@ import streamlit as st
 import tempfile
 import json
 import pandas as pd
-from pandasai import PandasAI
+import pandasai as pai
+from pandasai.dataframe.base import DataFrame
 from pandasai.data_loader.semantic_layer_schema import SemanticLayerSchema, Source, Column
 from pandasai.core.response.chart import ChartResponse
 from pandasai.core.response.dataframe import DataFrameResponse
@@ -58,8 +59,7 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
 
 if st.session_state.csv and st.session_state.description and st.session_state.json and st.session_state.df and st.session_state.description_text and st.session_state.columns:
     llm = GeminiLLM(api_key=st.secrets["GOOGLE_API_KEY"])
-    pai = PandasAI(llm)
-    st.session_state.df = pai.DataFrame(data=df, schema=schema)
+    st.session_state.df = pai.DataFrame(data=df, schema=schema,config={"llm":llm})
     st.session_state.csv = True
     st.session_state.description = True
     st.session_state.json = True

@@ -32,7 +32,9 @@ class PandasAILLM(LLM):
         return "pandasai"
 
     def call(self, instruction: Any, context: Optional[dict] = None) -> str:
-    # Convert structured prompt to plain string
+        st.write("Instruction type:", type(instruction))
+        st.write("Instruction dir:", dir(instruction))
+
         if not isinstance(instruction, str):
             try:
                 instruction = instruction.to_string()  # Preferred

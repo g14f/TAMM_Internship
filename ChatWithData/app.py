@@ -20,49 +20,6 @@ import requests
 from pandasai.llm.base import LLM
 from typing import Optional
 
-class PandasAILLM(LLM):
-    def __init__(self, api_token: str, model: str = "gpt-3.5", temperature: float = 0.2):
-        super().__init__(api_key=api_token)
-        self.model = model
-        self.temperature = temperature
-        self.api_url = "https://api.pandas-ai.com/v1/chat/completions"
-
-    @property
-    def type(self) -> str:
-        return "pandasai"
-
-    def call(self, instruction: Any, context: Optional[dict] = None) -> str:
-        print("Instruction type:", type(instruction))
-        print("Instruction dir:", dir(instruction))
-
-        if not isinstance(instruction, str):
-            try:
-                instruction = instruction.to_string()  # Preferred
-            except AttributeError:
-                try:
-                    instruction = str(instruction)
-                except Exception:
-                    raise TypeError(f"Cannot stringify instruction of type {type(instruction)}")
-
-        payload = {
-            "model": self.model,
-            "messages": [{"role": "user", "content": instruction}],
-            "temperature": self.temperature
-        }
-        headers = {
-        "Authorization": f"Bearer {self.api_key}",
-        "Content-Type": "application/json"
-        }
-
-        response = requests.post(self.api_url, headers=headers, json=payload)
-
-        if response.status_code == 200:
-            result = response.json()
-            return result["choices"][0]["message"]["content"]
-        else:
-            raise RuntimeError(f"PandasAI API Error {response.status_code}: {response.text}")
-
-
 class GeminiLLM(LLM):
     def __init__(self, api_key: str, model="gemini-2.5-pro"):
         self.api_key = api_key
@@ -150,7 +107,7 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
             st.session_state.conversation.append({"role": "user", "type": "text", "message": question})
             st.session_state.conversation.append({"role": "bot", "type": "text", "message": "Invalid Question"})
             print(st.session_state.conversation)
-            st.write(e)
+            print(e)
         with chat_container:
             st.markdown("<div style='height: 80vh; overflow-y: auto;'>", unsafe_allow_html=True)
     

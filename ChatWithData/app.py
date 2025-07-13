@@ -59,7 +59,7 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
 
 if st.session_state.csv and st.session_state.description and st.session_state.json:
     llm = GeminiLLM(api_key=st.secrets["GOOGLE_API_KEY"])
-    st.session_state.df = pai.DataFrame(data=df, schema=schema,config={"llm":llm})
+    st.session_state.df = pai.DataFrame(data=st.session_state.df, schema=schema,config={"llm":llm})
     st.session_state.csv = True
     st.session_state.description = True
     st.session_state.json = True

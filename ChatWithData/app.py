@@ -75,7 +75,7 @@ class GeminiLLM(LLM):
         return "gemini"
 
     def call(self, instruction: str, context: dict) -> str:
-        response = self.client.generate_content(instruction)
+        response = self.client.generate_content(str(instruction))
         return response.text if hasattr(response, 'text') else str(response)
 
         

@@ -29,10 +29,9 @@ class PandasAILLM(LLM):
 
     @property
     def type(self) -> str:
-        st.write("CUSTOM LLM TYPE CALLED")
         return "pandasai"
 
-    def call(self, instruction: str, context: Optional[dict] = None) -> str:
+    def call(self, instruction: Any, context: Optional[dict] = None) -> str:
         payload = {
             "model": self.model,
             "messages": [{"role": "user", "content": instruction}],

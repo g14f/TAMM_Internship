@@ -107,8 +107,8 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
 
 if st.session_state.csv and st.session_state.description and st.session_state.json:
     llm = PandasAILLM(api_token=st.secrets["PAI_API_KEY"])
-    st.text(f"LLM instance: {type(llm).__name__}")
-    st.text(f"LLM type property: {llm.type}")
+    assert llm.type == "pandasai", "LLM type is not 'pandasai'"
+    assert hasattr(llm, "type"), "LLM has no 'type' property"
     df = DataFrame(data=st.session_state.df, schema=st.session_state.schema)
     st.session_state.agent = Agent(dfs=df, config={"llm": llm})
     st.session_state.csv = True

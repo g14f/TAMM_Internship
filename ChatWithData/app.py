@@ -10,8 +10,9 @@ from pandasai.core.response.chart import ChartResponse
 from pandasai.core.response.dataframe import DataFrameResponse
 from pandasai.core.response.number import NumberResponse
 from pandasai.core.response.string import StringResponse
-from pandasai.smart_dataframe import SmartDataframe
+from pandasai.dataframe.virtual_dataframe import VirtualDataFrame
 from pandasai.llm.base import LLM
+from pandasai.agent.base import Agent
 import google.generativeai as genai
 
 class GeminiLLM(LLM):
@@ -38,6 +39,8 @@ if 'df' not in st.session_state:
     st.session_state.df = None
 if 'schema' not in st.session_state:
     st.session_state.schema = None
+if 'agent' not in st.session_state:
+    st.session_state.agent = None
 if 'description_text' not in st.session_state:
     st.session_state.description_text = None
 if 'conversation' not in st.session_state:
@@ -64,7 +67,8 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
 
 if st.session_state.csv and st.session_state.description and st.session_state.json:
     llm = GeminiLLM(api_key=st.secrets["GOOGLE_API_KEY"])
-    st.session_state.df = pai.DataFrame(data=st.session_state.df, schema=st.session_state.schema,config={"llm":llm})
+    vdf = VirtualDataFrame(data=st.session_state.df, schema=st.session_state.schema)
+    st.session_state.agent = Agent(dfs=vdf, config={"llm": llm})
     st.session_state.csv = True
     st.session_state.description = True
     st.session_state.json = True
@@ -75,9 +79,9 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
         try:
             response = None
             if len(st.session_state.conversation) == 0:
-                response = st.session_state.df.chat(question) 
+                response = st.session_state.agent.chat(question) 
             else:
-                response = st.session_state.df.follow_up(question)
+                response = st.session_state.agent.follow_up(question)
             
             st.session_state.conversation.append({"role": "user", "type": "text", "message": question})
             if isinstance(response, DataFrameResponse):

@@ -34,21 +34,21 @@ For this app, you use a **paper trading account**—meaning you get a virtual po
 
 ## 📝 How to Get Your Alpaca API Key & Secret Key
 
-1. **Sign Up or Log In to Alpaca:**  
-   Go to [https://alpaca.markets/](https://alpaca.markets/) and create a free account.
+1. **Go to [alpaca.markets](https://alpaca.markets/)**  
+   - Create a free account, or log in if you already have one.
+   - ⚠️ **Important:** Make sure to choose **"Trading API"** (not "Broker API") when signing up or logging in.
 
-2. **Switch to Paper Trading:**  
-   After logging in, click your avatar (top right) > **Paper Trading**.
+2. **Click "Home"** after logging in.
 
-3. **Get Your API Keys:**  
-   - Go to the **API Keys** section (found in the left sidebar).
-   - Click **Generate New Key** (or use the existing ones).
-   - Copy both your **API Key** and **Secret Key**—you’ll use them in the app.
+3. **Scroll down**—you’ll find the **"API Keys"** section on the right side of the Home page.
+
+4. **Generate your keys:**  
+   - Click **"Generate New Key"** if you don’t have one already.
+   - Copy both the **API Key** and **Secret Key**.  
+   - You’ll need to enter these in the app.
 
 > **Note:**  
-> These keys only allow simulated trades and read your virtual portfolio.  
-> You never risk real money or touch your real assets.
-
+> These keys only allow simulated (paper) trading, so you don’t risk any real money.
 ---
 
 ## 📈 How to Use the App

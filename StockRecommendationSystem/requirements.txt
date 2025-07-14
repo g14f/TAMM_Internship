@@ -6,3 +6,4 @@ langchain
 langchain-google-genai
 pydantic
 alpaca-trade-api
+urllib3<2.0

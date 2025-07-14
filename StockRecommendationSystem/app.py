@@ -14,7 +14,7 @@ from alpaca.trading.client import TradingClient
 from alpaca.trading.requests import MarketOrderRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
 
-google_api_key = st.secrets['GOOLE_API_KEY']
+google_api_key = st.secrets['GOOGLE_API_KEY']
 finhub_api_key = st.secrets['FINNHUB_API_KEY']
 
 os.environ["GOOGLE_API_KEY"] = google_api_key

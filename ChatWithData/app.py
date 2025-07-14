@@ -61,9 +61,10 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
     if file:
         st.session_state.csv = True
         st.session_state.df = pd.read_csv(file)
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as tmp:
-            tmp.write(file.getbuffer())
-            st.session_state.path = tmp.name
+        #with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as tmp:
+            #tmp.write(file.getbuffer())
+            #st.session_state.path = tmp.name
+        st.session_state.path = file.name
     description = st.text_input("Enter a description of your data:")
     if description:
         st.session_state.description_text = description

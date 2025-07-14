@@ -67,3 +67,60 @@ Your **metadata JSON** should look like this:
     "description": "Listing price of the car in USD"
   }
 ]
+
+```
+
+## 📝 Notes
+
+- **`name`**: Must match the column name in your CSV.
+- **`type`**: Should be one of: `"float"`, `"integer"`, `"string"`, `"boolean"`, etc.
+- **`description`**: Briefly explain what the column means.
+
+---
+
+## 4. Start Chatting!
+
+Once your files are uploaded and the description is provided, type any question about your data, such as:
+
+- “What is the average value of A1?”
+- “Show all rows where number of employees is more than 15.”
+- “Which entry has the highest net profit to total assets ratio?”
+
+The chatbot will reply with text, tables, or even charts based on your question.
+
+---
+
+## 📂 Sample Data
+
+Curious? Try out the chatbot with ready-made examples from the `sample_data` folder!
+
+---
+
+## ❓ FAQ
+
+**Q: Do I have to upload a metadata file?**  
+A: Yes! The chatbot relies on column metadata to understand and answer your questions accurately.
+
+**Q: What format should the metadata file be in?**  
+A: Use JSON as shown above. Each column is described as a separate JSON object in a list.
+
+**Q: What if I get an “Invalid Question” error?**  
+A: Try rephrasing your question. The chatbot may not understand highly complex or ambiguous queries.
+
+---
+
+## 🛠️ How It Works
+
+- **AI Engine:** Uses Google Gemini for natural language understanding
+- **Backend:** [pandasai](https://github.com/gventuri/pandas-ai) for data analysis
+- **Frontend:** Streamlit for an interactive web interface
+
+---
+
+## 🌟 Try it Now
+
+[chat-with-data-g14f.streamlit.app](https://chat-with-data-g14f.streamlit.app)
+
+---
+
+**Enjoy chatting with your data! 🚀**

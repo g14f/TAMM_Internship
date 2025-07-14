@@ -6,21 +6,22 @@ It supports both **training from scratch** and **inference with a saved model**,
 ---
 
 ## 📂 Project Structure
-app.ipynb # Main notebook for the project (the code)
-requirements.txt # List of required Python packages
+```
+app.ipynb               # Main notebook/code for the project
+requirements.txt        # List of required Python packages
+
 data/
-train/ # Training images
-val/ # Validation images
-test/ # Test images
-train.csv # Training image paths and labels (0: non-compliant, 1: compliant)
-val.csv # Validation image paths and labels
-test.csv # Test image paths (no labels)
-solutions_PRIVATE.csv # True labels for test images (not used for training)
-predictions.csv # Model's predictions for the test set
-passport.keras # Saved model (ResNet50, fine-tuned, overfitted)
-... # Optionally, you can upload your model here if you wish
-
-
+    train/                  # Training images
+    val/                    # Validation images
+    test/                   # Test images
+    train.csv               # Training image paths and labels (0: non-compliant, 1: compliant)
+    val.csv                 # Validation image paths and labels
+    test.csv                # Test image paths (no labels)
+    solutions_PRIVATE.csv   # True labels for test images (not used for training)
+    predictions.csv         # Model's predictions for the test set
+    passport.keras          # Saved model (ResNet50, fine-tuned, overfitted)
+    ...                     # Optionally, you can upload your own pre-trained models here
+```
 ---
 
 ## 🚀 Features

@@ -7,3 +7,4 @@ langchain
 langchain-google-genai
 pydantic
 alpaca-trade-api
+alpaca-py

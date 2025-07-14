@@ -106,7 +106,7 @@ def get_stock_data(ticker_symbol: str) -> Stock:
 def check_keys():
     if st.session_state.api_key and st.session_state.secret_key:
         st.session_state.keys_entered = True
-        st.session_state.fetching_portfolio = True  # Start first step
+        st.session_state.fetching_portfolio = True
         st.session_state.failed = False
 if "api_key" not in st.session_state:
     st.session_state.api_key = ""
@@ -138,8 +138,8 @@ if st.session_state.failed:
   st.session_state.keys_entered = False
   st.session_state.failed = False
 elif not st.session_state.keys_entered:
-    st.text_input("Enter your API Key", key="api_key", on_change=check_keys)
-    st.text_input("Enter your Secret Key", key="secret_key", type="password", on_change=check_keys)
+    st.text_input("Enter your Alpaca API Key", key="api_key", type="password", on_change=check_keys)
+    st.text_input("Enter your Alpaca Secret Key", key="secret_key", type="password", on_change=check_keys)
 elif st.session_state.fetching_portfolio:
     st.info("Fetching your portfolio...")
     try:

@@ -69,7 +69,7 @@ if not st.session_state.csv or not st.session_state.description or not st.sessio
         st.session_state.description_text = description
         st.session_state.description = True
 
-    metadata = st.file_uploader("Upload your columns metadata as JSON format", key="f2")
+    metadata = st.file_uploader("Upload your columns metadata as JSON format", key="f2",type=["json"])
     if metadata:
         st.session_state.json = True
         columns = json.load(metadata)

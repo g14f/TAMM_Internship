@@ -82,9 +82,9 @@ Your **metadata JSON** should look like this:
 
 Once your files are uploaded and the description is provided, type any question about your data, such as:
 
-- “What is the average value of A1?”
-- “Show all rows where number of employees is more than 15.”
-- “Which entry has the highest net profit to total assets ratio?”
+- “What is the average price of the cars?”
+- “List all car brands from most to least expensive.”
+- “Which car was manufactured most recently?”
 
 The chatbot will reply with text, tables, or even charts based on your question.
 

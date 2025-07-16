@@ -145,7 +145,7 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
                 """,
                 unsafe_allow_html=True
                         )
-                        st.dataframe(chat["message"])
+                    st.dataframe(chat["message"])
 
                 elif chat["type"] == "chart":
                     st.markdown(

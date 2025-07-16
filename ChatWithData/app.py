@@ -106,12 +106,12 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
             st.session_state.conversation.append({"role": "bot", "type": "text", "message": "Invalid Question"})
             print(st.session_state.conversation)
             print(e)
-        with chat_container:
-            st.markdown("<div style='height: 80vh; overflow-y: auto;'>", unsafe_allow_html=True)
+    with chat_container:
+        st.markdown("<div style='height: 80vh; overflow-y: auto;'>", unsafe_allow_html=True)
     
-            for chat in st.session_state.conversation:
-                if chat["role"] == "user":
-                    st.markdown(
+        for chat in st.session_state.conversation:
+            if chat["role"] == "user":
+                st.markdown(
             f"""
             <div style='text-align: right; margin-bottom: 10px;'>
                 <div style='display: inline-block; background-color: #dcf8c6; padding: 10px; border-radius: 10px; max-width: 70%;'>
@@ -120,11 +120,11 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
             </div>
             """,
             unsafe_allow_html=True
-                    )
+                )
 
-                elif chat["role"] == "bot":
-                    if chat["type"] == "text":
-                        st.markdown(
+            elif chat["role"] == "bot":
+                if chat["type"] == "text":
+                    st.markdown(
                 f"""
                 <div style='text-align: left; margin-bottom: 10px;'>
                     <div style='display: inline-block; background-color: #f1f0f0; padding: 10px; border-radius: 10px; max-width: 70%;'>
@@ -135,8 +135,8 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
                 unsafe_allow_html=True
                         )
 
-                    elif chat["type"] == "dataframe":
-                        st.markdown(
+                elif chat["type"] == "dataframe":
+                    st.markdown(
                 f"""
                 <div style='text-align: left; margin-bottom: 10px;'>
                     <div style='background-color: #f1f0f0; padding: 10px; border-radius: 10px; max-width: 90%;'>
@@ -147,8 +147,8 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
                         )
                         st.dataframe(chat["message"])
 
-                    elif chat["type"] == "chart":
-                        st.markdown(
+                elif chat["type"] == "chart":
+                    st.markdown(
                 f"""
                 <div style='text-align: left; margin-bottom: 10px;'>
                     <div style='background-color: #f1f0f0; padding: 10px; border-radius: 10px; max-width: 90%;'>
@@ -157,4 +157,4 @@ if st.session_state.csv and st.session_state.description and st.session_state.js
                 """,
                 unsafe_allow_html=True
                         )
-                        st.image(chat["message"]._get_image()) 
+                    st.image(chat["message"]._get_image()) 
